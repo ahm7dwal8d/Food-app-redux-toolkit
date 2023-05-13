@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 // eslint-disable-next-line react/prop-types
 function Meals({ data, loading }) {
     const { theme } = useSelector(state => state.Themes);
+    const { Auth } = useSelector(state => state.Meals);
     return(
         <div className='meals'>
             <div className='container'>
@@ -20,7 +21,11 @@ function Meals({ data, loading }) {
                                     <img className='w-100 rounded' src={meal.strMealThumb} alt='' />
                                     <h6 className={`pt-1 text-left ${theme === 'light' ? 'text-black-50' : 'text-white-50'}`}>{meal.strCategory}</h6>
                                     <h3 className='fs-5 text-left'>{meal.strMeal}</h3>
-                                    <Link to={`details/${meal.idMeal}`} className='btn btn-danger text-capitalize'>details</Link>
+                                    {Auth ? (
+                                        <Link to={`details/${meal.idMeal}`} className='btn btn-danger text-capitalize'>details</Link>
+                                    ) : (
+                                            <button className='btn btn-danger text-capitalize' disabled={!Auth}>details</button>
+                                    )}
                                 </div>
                             </div>
                         )

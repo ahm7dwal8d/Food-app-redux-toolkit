@@ -66,8 +66,13 @@ export const getMealbyCategories = createAsyncThunk(
 
 const mealsSlice = createSlice({
     name: 'meals',
-    initialState: { data: null, isLoading: false, isError: null, cate: null },
-    reducers: {},
+    initialState: { data: null, isLoading: false, isError: null, cate: null, Auth: false, name: null },
+    reducers: {
+        setAuth: (state, action) => {
+            state.name = action.payload;
+            state.Auth = true;
+        }
+    },
     extraReducers: {
         // getMeals 
         [getMeals.pending]: (state) => {
@@ -127,4 +132,6 @@ const mealsSlice = createSlice({
     }
 })
 
-export default mealsSlice.reducer
+
+export const { setAuth } = mealsSlice.actions;
+export default mealsSlice.reducer;
