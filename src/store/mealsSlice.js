@@ -8,6 +8,7 @@ export const getMeals = createAsyncThunk(
             const data = await res.json();
             return data;
         } catch (err) {
+            console.log(err.message)
             return rejectWithValue(err.message)
         }
     }
@@ -63,10 +64,23 @@ export const getMealbyCategories = createAsyncThunk(
     }
 )
 
+export const getRandomMeal = createAsyncThunk(
+    'meals/getRandomMeal',
+    async (_, { rejectWithValue }) => {
+        try { 
+            const res = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+            const data = await res.json();
+            return data;
+        } catch (err) {
+            return rejectWithValue(err.message)
+        }
+    }
+)
+
 
 const mealsSlice = createSlice({
     name: 'meals',
-    initialState: { data: null, isLoading: false, isError: null, cate: null, Auth: false, name: null },
+    initialState: { data: null, isLoading: false, isError: null, cate: null, Auth: false, name: null, randomMeal: null },
     reducers: {
         setAuth: (state, action) => {
             state.name = action.payload;
@@ -83,10 +97,13 @@ const mealsSlice = createSlice({
             state.data = action.payload;
         },
         [getMeals.rejected]: (state, action) => {
+            state.isLoading = false;
             state.isError = action.payload; 
+            console.log(action.payload)
         },
         // getCategories
         [getCategories.pending]: (state) => {
+            state.isLoading = false;
             state.isLoading = true;
         },
         [getCategories.fulfilled]: (state, action) => {
@@ -94,6 +111,7 @@ const mealsSlice = createSlice({
             state.data = action.payload;
         },
         [getCategories.rejected]: (state, action) => {
+            state.isLoading = false;
             state.isError = action.payload; 
         },
         // Get Details 
@@ -105,6 +123,7 @@ const mealsSlice = createSlice({
             state.data = action.payload;
         },
         [getDetails.rejected]: (state, action) => {
+            state.isLoading = false;
             state.isError = action.payload; 
         },
         // Search Meals 
@@ -116,6 +135,7 @@ const mealsSlice = createSlice({
             state.data = action.payload;
         },
         [searchMeals.rejected]: (state, action) => {
+            state.isLoading = false;
             state.isError = action.payload; 
         },
         // getMeal By Categories 
@@ -127,8 +147,21 @@ const mealsSlice = createSlice({
             state.data = action.payload;
         },
         [getMealbyCategories.rejected]: (state, action) => {
+            state.isLoading = false;
             state.isError = action.payload; 
         },
+        // Get Random Meal
+        [getRandomMeal.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [getRandomMeal.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.randomMeal = action.payload;
+        },
+        [getRandomMeal.rejected]: (state, action) => { 
+            state.isLoading = false;
+            state.isError = action.payload;
+        }
     }
 })
 

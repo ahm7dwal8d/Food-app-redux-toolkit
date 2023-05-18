@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoon, faSun, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
 import { switchTheme } from '../store/ThemeSlice';
 import { setAuth } from '../store/mealsSlice';
 
@@ -24,11 +24,14 @@ function Header() {
                     {isError}
                 </div>
             )}
-            {name && (
-                <div className="alert alert-danger m-0 d-flex justify-content-center align-items-center" role="alert">
-                    {name}
-                    <FontAwesomeIcon icon={faUser} className='ms-2'/>
-                </div>
+            {isError === null && (
+                <div className="alert alert-primary m-0 d-flex justify-content-center align-items-center" role="alert">
+                    {name === null ? (
+                        <h6>Please Create Auth</h6>
+                    ) : (
+                        name
+                    )}
+                </div>  
             )}
             <div className='header py-3' style={{backgroundColor: '#1E293B'}} >
                 <div className='container d-flex justify-content-between align-items-center'>

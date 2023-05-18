@@ -1,12 +1,19 @@
 /* eslint-disable react/prop-types */
+import {useEffect} from 'react'
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import Random_Meal from "./Random_Meal";
+import { getRandomMeal } from "../store/mealsSlice";
 
 // eslint-disable-next-line react/prop-types
 function Meals({ data, loading }) {
     const { theme } = useSelector(state => state.Themes);
     const { Auth } = useSelector(state => state.Meals);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getRandomMeal());
+    } ,[])
     return(
         <div className='meals'>
             <div className='container'>
@@ -32,7 +39,14 @@ function Meals({ data, loading }) {
                     })
                     ) }
                     </div>
-                </div>
+            </div>
+            {Auth && (
+        setTimeout(() => {
+          <div className='random-meal' style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'fiexd', inset: 0, width: '100%', height: '100%'}}>
+          <Random_Meal />
+      </div>
+        }, 1000)
+      )}
         </div>
     )
 }
